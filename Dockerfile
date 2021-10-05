@@ -18,5 +18,5 @@ RUN poetry install --no-dev
 COPY . .
 
 # Run a single uvicorn worker
-# Multiple workers are managed by kubernetes, rather than something like gunicorn 
+# Multiple workers are managed by kubernetes, rather than something like gunicorn
 CMD ["uvicorn", "patsy.main:app", "--host", "0,0,0,0", "--port", "80"]
