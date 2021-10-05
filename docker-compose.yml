@@ -18,7 +18,7 @@ services:
       POSTGRES_PASSWORD: pypatsy
       POSTGRES_USER: pypatsy
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pysite"]
+      test: ["CMD-SHELL", "pg_isready -U pypatsy"]
       interval: 2s
       timeout: 1s
       retries: 5
@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    commands: ["uvicorn", "patsy.main:app", "--reload", "--host", "0,0,0,0", "--port", "8000"]
+    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "--port", "8000", "patsy.main:app"]
     volumes:
       - .:/patsy:ro
     tty: true
