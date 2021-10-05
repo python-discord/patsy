@@ -1,0 +1,43 @@
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "5"
+      max-size: "10m"
+
+x-restart-policy: &restart_policy
+  restart: unless-stopped
+
+services:
+  postgres:
+    << : *logging
+    << : *restart_policy
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: pypatsy
+      POSTGRES_PASSWORD: pypatsy
+      POSTGRES_USER: pypatsy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pysite"]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+
+  patsy:
+    << : *logging
+    << : *restart_policy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/patsy:ro
+    tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8000:80"
+    environment:
+      DATABASE_URL: postgres://pypatsy:pypatsy@postgres:5432/pypatsy
