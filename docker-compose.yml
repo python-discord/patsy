@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    commands: ["uvicorn", "patsy.main:app", "--reload", "--host", "0,0,0,0", "--port", "80"]
+    commands: ["uvicorn", "patsy.main:app", "--reload", "--host", "0,0,0,0", "--port", "8000"]
     volumes:
       - .:/patsy:ro
     tty: true
@@ -39,6 +39,6 @@ services:
     env_file:
       - .env
     ports:
-      - "127.0.0.1:8000:80"
+      - "127.0.0.1:8000:8000"
     environment:
       DATABASE_URL: postgres://pypatsy:pypatsy@postgres:5432/pypatsy
