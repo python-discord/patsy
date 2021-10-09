@@ -66,4 +66,10 @@ async def docs(request: Request):
     return TEMPLATES.TemplateResponse(template_name, {"request": request})
 
 
+@app.get("/ping", include_in_schema=False)
+async def pingpong():
+    """Basic ping/pong endpoint for ready checks."""
+    return "pong!"
+
+
 app.add_middleware(SessionMiddleware, secret_key=secrets.token_urlsafe(64))
