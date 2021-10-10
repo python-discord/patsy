@@ -16,6 +16,7 @@ class _Config(BaseSettings):
 
     version: str = _get_project_version()
     debug: bool = False
+    state_secret: str
 
     dev_guild_id: t.Optional[int] = None
     pydis_guild_id = 267624335836053506

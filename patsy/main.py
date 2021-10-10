@@ -1,5 +1,3 @@
-import secrets
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
@@ -72,4 +70,4 @@ async def pingpong():
     return "pong!"
 
 
-app.add_middleware(SessionMiddleware, secret_key=secrets.token_urlsafe(64))
+app.add_middleware(SessionMiddleware, secret_key=CONFIG.state_secret)
