@@ -19,4 +19,4 @@ COPY . .
 
 # Run a single uvicorn worker
 # Multiple workers are managed by kubernetes, rather than something like gunicorn
-CMD ["uvicorn", "--proxy-headers", "--host", "0.0.0.0", "--port", "80", "patsy.main:app"]
+CMD ["uvicorn", "--proxy-headers", "--host", "0.0.0.0", "--port", "8000", "patsy.main:app"]
