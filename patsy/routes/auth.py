@@ -27,7 +27,7 @@ async def login_with_discord(request: Request):
     """
     state = secrets.token_urlsafe(32)
     request.session["state"] = state
-    return client.redirect(state=state, prompt="none")
+    return client.redirect(state=state, prompt="consent")
 
 
 def is_guild_we_want(guild: dict) -> bool:
