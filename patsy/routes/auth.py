@@ -1,12 +1,13 @@
 import secrets
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Cookie
 from starlette.exceptions import HTTPException
 from starlette.requests import Request
+from starlette.responses import RedirectResponse
 from starlette_discord.client import DiscordOAuthClient
 
 from patsy import logger
-from patsy.settings import CONFIG, OAUTHDETAILS
+from patsy.settings import CONFIG, OAUTHDETAILS, TEMPLATES
 
 router = APIRouter(include_in_schema=False)
 client = DiscordOAuthClient(
@@ -51,7 +52,7 @@ async def callback(request: Request, code: str, state: str):
         raise HTTPException(401)
 
     async with client.session(code) as session:
-        user = await session.identify()
+        user = await session.identify()  # noqa: F841 XXX This will be used for generating token eventually.
         guilds = await session.guilds()
 
     is_admin = False
@@ -68,7 +69,26 @@ async def callback(request: Request, code: str, state: str):
         except TypeError:
             logger.debug("Could not convert the permission string to an int")
 
-    return {
-        "user": str(user),
-        "admin_in_guild": is_admin,
-    }
+    # Redirect so that a user doesn't refresh the page and spam discord
+    redirect = RedirectResponse("/show_token", status_code=303)
+    redirect.set_cookie(
+        key='token',
+        value=is_admin,
+        httponly=True,
+        max_age=10,
+        path='/show_token',
+    )
+    return redirect
+
+
+@router.get("/show_token")
+async def show_token(request: Request, token: str = Cookie(None)):  # noqa: B008
+    """Show the token from the cookie to the user."""
+    template_name = "cookie_disabled.html"
+    context = {"request": request}
+
+    if token:
+        context["token"] = f"{token = }"
+        template_name = "api_token.html"
+
+    return TEMPLATES.TemplateResponse(template_name, context)
