@@ -4,7 +4,13 @@ Our beloved assistant, he only has a few simple tasks here at PyDis, using two h
 ![Image of Patsy from Monty Python](https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/Patsy%2C_Monty_Python_and_the_Holy_Grail.jpeg/220px-Patsy%2C_Monty_Python_and_the_Holy_Grail.jpeg)
 
 ## Purpose
-The bot will send Patsy message data, including the content, and Patsy will transform and store that data in postgres. To be GDPR compliant, Patsy will also store the opt-out status of users, and not store data for those users.
+[Python](https://github.com/python-discord/bot) will send Patsy message data, including the content, and Patsy will transform and store that data in postgres.
+
+With this data we plan to inspect what topics get asked about often in help channels, along with which ones go un-answered the most.
+
+To be GDPR compliant, Python will also give an opt-out command, which will be stored by Patsy, and will be used to determine which messages to store, and which to drop.
+
+Deleted messages will always be deleted from the data set, regardless of opt-out status.
 
 ## Env file
 Patsy requires the following environment variables to be present in a `.env` file, found at the project root.
