@@ -32,6 +32,8 @@ services:
     command: ["uvicorn", "--reload", "--host", "0.0.0.0", "--port", "8000", "patsy.main:app"]
     volumes:
       - .:/patsy:ro
+    read_only: true  # Prod uses a read-only fs, override this locally if it helps with debugging
+    user: "65534"  # Prod uses a non-root user, override this locally if it helps with debugging
     tty: true
     depends_on:
       postgres:
