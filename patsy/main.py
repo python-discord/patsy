@@ -32,7 +32,7 @@ def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="Pixels API",
+        title="Patsy API",
         description=None,
         version=CONFIG.version,
         routes=app.routes,
