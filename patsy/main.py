@@ -6,7 +6,6 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
-from patsy.routes import auth
 from patsy.settings import CONFIG, TEMPLATES
 
 app = FastAPI(
@@ -15,7 +14,6 @@ app = FastAPI(
 )
 
 
-app.include_router(auth.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

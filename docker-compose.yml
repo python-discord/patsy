@@ -43,6 +43,5 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     environment:
-      REDIRECT_URI: http://127.0.0.1:8000/callback
       DATABASE_URL: postgres://pypatsy:pypatsy@postgres:5432/pypatsy
       STATE_SECRET: "IWW1RAVNCR7bb3yZbYerZ0KSA85QvKRDQaBfG4xgGdXZKhrXAQoPg2aT4BITtzurBA8CbuHBzoaMd1fxPry6RA"
