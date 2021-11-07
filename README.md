@@ -34,4 +34,4 @@ Once postgres has finished starting, open another terminal and run `alembic revi
 This will create a migration file in the path `alembic_conf/versions`. Make sure to check it over, and fix any flake8 issues.
 
 ## Committing
-Before committing make sure to run `poetry install` and then `poetry run precommit` to install the project dependencies and the pre-commit hook.
+Before committing make sure to run `poetry install` and then `poetry run task precommit` to install the project dependencies and the pre-commit hook.
