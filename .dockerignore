@@ -6,3 +6,5 @@
 !pyproject.toml
 !poetry.lock
 !LICENSE
+!alembic.ini
+!alembic_conf
