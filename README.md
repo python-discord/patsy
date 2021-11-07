@@ -27,7 +27,9 @@ Once your `.env` file is setup, you can start this service by running `docker-co
 You can test it's running be navigating to `http://127.0.0.1:8000/ping`
 
 ## Generating migration files
-Once your `.env` file is setup, start postgres by running `docker-compose up postgres`. Once started, open another terminal and run `alembic revision --autogenerate -m "Migration message here."`.
+After setting up your `.env`, start postgres in docker by running `docker-compose up postgres`.
+
+Once postgres has finished starting, open another terminal and run `alembic revision --autogenerate -m "Migration message here."`.
 
 This will create a migration file in the path `alembic_conf/versions`. Make sure to check it over, and fix any flake8 issues.
 
