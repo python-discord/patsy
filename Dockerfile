@@ -5,7 +5,7 @@ ENV PIP_NO_CACHE_DIR=false \
     POETRY_VIRTUALENVS_CREATE=false
 
 # Install poetry
-RUN pip install -U poetry
+RUN pip install -U pip poetry
 
 # Create the working directory
 WORKDIR /patsy
