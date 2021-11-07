@@ -8,6 +8,10 @@ from pydantic import BaseSettings
 class _Config(BaseSettings):
     """General configuration settings for the service."""
 
+    class Config:
+        env_file = '.env'
+        env_file_encoding = 'utf-8'
+
     def _get_project_version() -> str:
         with open("pyproject.toml") as pyproject:
             file_contents = pyproject.read()
@@ -23,15 +27,16 @@ class _Config(BaseSettings):
     guild_id: int = dev_guild_id or pydis_guild_id
 
 
-class _OAuthDetails(BaseSettings):
-    """Discord OAuth details, loaded from env vars."""
+class _Database(BaseSettings):
+    """Settings for the database connection."""
 
-    client_id: str
-    client_secret: str
-    redirect_uri: str
-    scopes: tuple[str, ...] = ("identify", "guilds")
+    class Config:
+        env_file = '.env'
+        env_file_encoding = 'utf-8'
+
+    database_url: str
 
 
 CONFIG: _Config = _Config()
-OAUTHDETAILS: _OAuthDetails = _OAuthDetails()
+DATABASE: _Database = _Database()
 TEMPLATES: Jinja2Templates = Jinja2Templates(directory="patsy/templates")

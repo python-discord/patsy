@@ -8,6 +8,11 @@ x-logging: &logging
 x-restart-policy: &restart_policy
   restart: unless-stopped
 
+x-secure-containers: &secure_containers
+  privileged: false
+  read_only: true  # Prod uses a read-only fs, override this locally if it helps with debugging
+  user: "65534"  # Prod uses a non-root user, override this locally if it helps with debugging
+
 services:
   postgres:
     << : *logging
@@ -22,18 +27,19 @@ services:
       interval: 2s
       timeout: 1s
       retries: 5
+    ports:
+    - 5432:5432
 
   patsy:
     << : *logging
     << : *restart_policy
+    << : *secure_containers
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "--port", "8000", "patsy.main:app"]
+    command: ["sh", "-c", "alembic upgrade head && uvicorn patsy.main:app --host 0.0.0.0 --port 8000 --reload"]
     volumes:
       - .:/patsy:ro
-    read_only: true  # Prod uses a read-only fs, override this locally if it helps with debugging
-    user: "65534"  # Prod uses a non-root user, override this locally if it helps with debugging
     tty: true
     depends_on:
       postgres:
@@ -43,5 +49,5 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     environment:
-      DATABASE_URL: postgres://pypatsy:pypatsy@postgres:5432/pypatsy
+      DATABASE_URL: postgresql://pypatsy:pypatsy@postgres:5432/pypatsy
       STATE_SECRET: "IWW1RAVNCR7bb3yZbYerZ0KSA85QvKRDQaBfG4xgGdXZKhrXAQoPg2aT4BITtzurBA8CbuHBzoaMd1fxPry6RA"
