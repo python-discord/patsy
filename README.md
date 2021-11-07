@@ -15,23 +15,21 @@ Deleted messages will always be deleted from the data set, regardless of opt-out
 ## Env file
 Patsy requires the following environment variables to be present in a `.env` file, found at the project root.
 
-`CLIENT_ID` - The client ID found in the [Discord API portal](https://discord.com/developers/applications) (Also the user ID of your bot!)
+`DATABASE_URL` - A connection string to the postgres database `postgresql://pypatsy:pypatsy@postgres:5432/pypatsy` if using docker-compose in dev. This is also required in dev to [generate migration files](#generating-migration-files).
 
-`CLIENT_SECRET` - The OAuth2 client secret, also found in the [Discord API portal](https://discord.com/developers/applications) under the OAuth2 section.
-
-The following environment variables are **required in production**, but not dev as they are set in the docker-compose file.
-
-`REDIRECT_URI` - The callback URI to redirect the user after the Discord OAuth2 flow
-
-`DATABASE_URL` - A connection string to the postgres database
-
-The following environment variable is **required in dev**.
+The following environment variables are only **required in dev**.
 
 `DEV_GUILD_ID` - The ID of the guild you will be testing this with. This is used to determine which users have permission to use certain endpoints.
+`DEBUG` - `true` or `false`. Whether to enable debug mode in the service.
 
 ## Running patsy locally
 Once your `.env` file is setup, you can start this service by running `docker-compose up` in the root directory.
 You can test it's running be navigating to `http://127.0.0.1:8000/ping`
 
+## Generating migration files
+Once your `.env` file is setup, start postgres by running `docker-compose up postgres`. Once started, open another terminal and run `alembic revision --autogenerate -m "Migration message here."`.
+
+This will create a migration file in the path `alembic_conf/versions`. Make sure to check it over, and fix any flake8 issues.
+
 ## Committing
-Before committing make sure to run `poetry install` and then `poetry run precommit` to install the project dependencies and the pre-commit hook
+Before committing make sure to run `poetry install` and then `poetry run precommit` to install the project dependencies and the pre-commit hook.
