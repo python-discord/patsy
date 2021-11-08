@@ -7,7 +7,6 @@ Create Date: ${create_date}
 """
 import sqlalchemy as sa
 import sqlmodel  # noqa: F401
-
 from alembic import op
 ${imports if imports else ""}
 #  Revision identifiers, used by Alembic.
