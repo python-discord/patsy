@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
+from patsy.routes.v1 import users_router
 from patsy.settings import CONFIG, TEMPLATES
 
 app = FastAPI(
@@ -21,6 +22,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory="patsy/static"), name="static")
+
+app.include_router(users_router, prefix="/api/v1", tags=["users"])
 
 
 def custom_openapi():
