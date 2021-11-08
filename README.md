@@ -15,11 +15,13 @@ Deleted messages will always be deleted from the data set, regardless of opt-out
 ## Env file
 Patsy requires the following environment variables to be present in a `.env` file, found at the project root.
 
-`DATABASE_URL` - A connection string to the postgres database `postgresql://pypatsy:pypatsy@postgres:5432/pypatsy` if using docker-compose in dev. This is also required in dev to [generate migration files](#generating-migration-files).
+The following environment variables is only **required in production**
+
+`DATABASE_URL` - An asyncpg connection string to the postgres database `postgresql+asyncpg://pypatsy:pypatsy@postgres:5432/pypatsy`.
+`STATE_SECRET` - A long random string, must be URL safe.
 
 The following environment variables are only **required in dev**.
 
-`DEV_GUILD_ID` - The ID of the guild you will be testing this with. This is used to determine which users have permission to use certain endpoints.
 `DEBUG` - `true` or `false`. Whether to enable debug mode in the service.
 
 ## Running patsy locally

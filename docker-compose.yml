@@ -40,6 +40,7 @@ services:
     command: ["sh", "-c", "alembic upgrade head && uvicorn patsy.main:app --host 0.0.0.0 --port 8000 --reload"]
     volumes:
       - .:/patsy:ro
+      - ./alembic_conf/versions:/patsy/alembic_conf/versions
     tty: true
     depends_on:
       postgres:
@@ -49,5 +50,5 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     environment:
-      DATABASE_URL: postgresql://pypatsy:pypatsy@postgres:5432/pypatsy
+      DATABASE_URL: postgresql+asyncpg://pypatsy:pypatsy@postgres:5432/pypatsy
       STATE_SECRET: "IWW1RAVNCR7bb3yZbYerZ0KSA85QvKRDQaBfG4xgGdXZKhrXAQoPg2aT4BITtzurBA8CbuHBzoaMd1fxPry6RA"
