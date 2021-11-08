@@ -45,6 +45,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.taskipy.tasks]
 lint = "pre-commit run --all-files"
 precommit = "pre-commit install"
+revision = "docker-compose exec patsy alembic revision --autogenerate -m"
 
 [tool.isort]
 multi_line_output = 6
@@ -52,5 +53,5 @@ order_by_type = false
 case_sensitive = true
 combine_as_imports = true
 line_length = 120
-known_local_folder = ["patsy"]
+known_first_party = ["patsy"]
 atomic = true
