@@ -13,7 +13,7 @@ app = FastAPI(
     redoc_url=None
 )
 
-
+app.add_middleware(SessionMiddleware, secret_key=CONFIG.state_secret)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -66,6 +66,3 @@ async def docs(request: Request):
 async def pingpong():
     """Basic ping/pong endpoint for ready checks."""
     return "pong!"
-
-
-app.add_middleware(SessionMiddleware, secret_key=CONFIG.state_secret)
