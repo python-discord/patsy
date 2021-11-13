@@ -3,9 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from patsy.routes.v1 import users_router
+from patsy.routes.v1 import v1_router
+from patsy.settings import CONFIG
 
-app = FastAPI()
+app = FastAPI(debug=CONFIG.debug, redoc_url="/", title="Patsy API", version=CONFIG.version)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(users_router, prefix="/api/v1", tags=["users"])
+app.include_router(v1_router, prefix="/api/v1")
 
 
 @app.exception_handler(StarletteHTTPException)
