@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from patsy.dependancies.database import get_session
 from patsy.models.users import UserCreate, UserRead, UserUpdate, UsersTable
 
-router = APIRouter(include_in_schema=True)
+router = APIRouter(include_in_schema=True, tags=["users"])
 
 
 @router.post("/users/", response_model=UserRead)
@@ -58,3 +58,14 @@ async def update_user(
     await session.commit()
     await session.refresh(db_user)
     return db_user
+
+
+@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(*, session: AsyncSession = Depends(get_session), user_id: int):
+    """Deletes a user."""
+    db_user = await session.get(UsersTable, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    session.delete(db_user)
+    await session.commit()
