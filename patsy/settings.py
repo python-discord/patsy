@@ -1,7 +1,6 @@
 import typing as t
 
 import tomlkit
-from fastapi.templating import Jinja2Templates
 from pydantic import BaseSettings
 
 
@@ -39,4 +38,3 @@ class _Database(BaseSettings):
 
 CONFIG: _Config = _Config()
 DATABASE: _Database = _Database()
-TEMPLATES: Jinja2Templates = Jinja2Templates(directory="patsy/templates")
