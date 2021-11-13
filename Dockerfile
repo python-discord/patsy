@@ -22,7 +22,7 @@ RUN apt-get update \
   curl \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+RUN curl -sSL https://install.python-poetry.org | python -
 
 WORKDIR $INSTALL_DIR
 COPY "pyproject.toml" "poetry.lock" ./
