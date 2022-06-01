@@ -18,7 +18,7 @@ asyncpg = "^0.24"
 alembic = "^1.7.4"
 uvicorn = {extras = ["standard"], version = "^0.15"}
 fastapi = "^0.70"
-httpx = "^0.20"
+httpx = "^0.23"
 tomlkit = "^0.7"
 loguru = "^0.5"
 
