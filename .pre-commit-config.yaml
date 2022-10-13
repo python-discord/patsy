@@ -1,23 +1,18 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.5.0
+    rev: v4.3.0
     hooks:
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml
-        args: [--unsafe]  # Needed for << lines in docker-compose.yml
+        args: [--unsafe]
       - id: end-of-file-fixer
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.5.1
+    rev: v1.9.0
     hooks:
       - id: python-check-blanket-noqa
-  - repo: https://github.com/pycqa/isort
-    rev: 5.8.0
-    hooks:
-      - id: isort
-        name: isort (python)
   - repo: local
     hooks:
       - id: flake8
@@ -26,4 +21,11 @@ repos:
         entry: poetry run flake8
         language: system
         types: [python]
-        require_serial: true
+      - id: mypy
+        name: mypy
+        description: Run static analysis of the project using mypy.
+        entry: poetry run mypy --no-error-summary
+        language: system
+        # Only run mypy on files in the pixels and migrations directories
+        files: (patsy|migrations)/.+
+        types: [python]

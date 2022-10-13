@@ -1,4 +1,4 @@
-name: Lint & Test
+name: Lint
 
 on:
   push:
@@ -11,7 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-test:
+  lint:
+    name: Run pre-commit, flake8 & mypy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,11 +25,9 @@ jobs:
           dev: true
           python_version: "3.10"
 
-      # We will not run `flake8` here, as we will use a separate flake8
-      # action. As pre-commit does not support user installs, we set
-      # PIP_USER=0 to not do a user install.
+      # We will not run flake8 or mypy here, as we will use a separate action.
       - name: Run pre-commit hooks
-        run: export PIP_USER=0; SKIP=flake8 pre-commit run --all-files
+        run: SKIP=flake8,mypy pre-commit run --all-files
 
       # Run flake8 and have it format the linting errors in the format of
       # the GitHub Workflow command to register error annotations. This
@@ -40,8 +39,17 @@ jobs:
       # ::error file={filename},line={line},col={col}::{message}
       - name: Run flake8
         run: "flake8 \
-        --format='::error file=%(path)s,line=%(row)d,col=%(col)d::\
-        [flake8] %(code)s: %(text)s'"
+        --format='::error file=%(path)s,line=%(row)d,col=%(col)d::[flake8] %(code)s: %(text)s'"
+
+      - name: Cache mypy runs
+        uses: actions/cache@v3
+        with:
+          path: .mypy_cache
+          key: ${{ hashfiles('pyproject.toml', 'poetry.lock') }}-mypy-cache
+
+      # Run mypy using the script to generate action annotations
+      - name: Run mypy
+        run: python scripts/mypy_report.py
 
       # Prepare the Pull Request Payload artifact. If this fails, we
       # we fail silently using the `continue-on-error` option. It's
@@ -64,3 +72,34 @@ jobs:
         with:
           name: pull-request-payload
           path: pull_request_payload.json
+
+  validate-migrations:
+    name: Validate Migrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Python Dependencies
+        uses: HassanAbouelela/actions/setup-python@setup-python_v1.3.2
+        with:
+          dev: false
+          python_version: "3.10"
+          install_args: --only main --only dev
+
+      - name: Setup Postgres
+        run: |
+          docker run --name postgres -d -p 5432:5432 \
+          --health-cmd "pg_isready -U pypatsy" \
+          -e POSTGRES_USER=pypatsy -e POSTGRES_PASSWORD=pypatsy -e POSTGRES_DB=pypatsy \
+          postgres:13-alpine
+          # Sleep until container is ready
+          sleep 5
+      - name: Run Migrations
+        run: |
+          poetry run task migrate
+        env:
+          DATABASE_URL: postgresql+asyncpg://pypatsy:pypatsy@localhost:5432/pypatsy
+          STATE_SECRET: IWW1RAVNCR7bb3yZbYerZ0KSA85QvKRDQaBfG4xgGdXZKhrXAQoPg2aT4BITtzurBA8CbuHBzoaMd1fxPry6RA
+          GIT_SHA: development

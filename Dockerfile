@@ -1,8 +1,7 @@
 FROM --platform=linux/amd64 ghcr.io/chrislovering/python-poetry-base:3.10-slim
 
 ARG git_sha="development"
-ENV GIT_SHA=$git_sha \
-    MAX_WORKERS=10
+ENV GIT_SHA=$git_sha
 
 # Create the working directory
 WORKDIR /patsy
