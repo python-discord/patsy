@@ -2,7 +2,7 @@ name: Build & Deploy
 
 on:
   workflow_run:
-    workflows: ["Lint & Test"]
+    workflows: ["Lint"]
     branches:
       - main
     types:
