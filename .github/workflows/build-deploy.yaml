@@ -27,7 +27,7 @@ jobs:
           echo "::set-output name=tag::$tag"
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -47,13 +47,14 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          target: production
           push: true
           cache-from: type=registry,ref=ghcr.io/python-discord/patsy:latest
           cache-to: type=inline
           tags: |
             ghcr.io/python-discord/patsy:latest
             ghcr.io/python-discord/patsy:${{ steps.sha_tag.outputs.tag }}
+          build-args: |
+            git_sha=${{ github.sha }}
 
   deploy:
     needs: build
@@ -72,7 +73,7 @@ jobs:
       # Check out the private "kubernetes" repository in the `kubernetes`
       # subdirectory using a GitHub Personal Access Token
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: python-discord/kubernetes
           path: kubernetes
