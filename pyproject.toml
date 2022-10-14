@@ -36,7 +36,7 @@ pep8-naming = "0.13.2"
 pre-commit = "2.20.0"
 taskipy = "1.10.3"
 mypy = "0.981"
-sqlalchemy2-stubs = "0.0.2a27"
+sqlalchemy2-stubs = "0.0.2a29"
 isort = "5.10.1"
 black = "22.10.0"
 
