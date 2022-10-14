@@ -21,10 +21,7 @@ app.add_middleware(
 @app.exception_handler(StarletteHTTPException)
 async def my_exception_handler(request: Request, exception: StarletteHTTPException) -> JSONResponse:
     """Custom exception handler to render template for 404 error."""
-    return JSONResponse(
-        status_code=exception.status_code,
-        content={"message": exception.detail}
-    )
+    return JSONResponse(status_code=exception.status_code, content={"message": exception.detail})
 
 
 @app.get("/ping", include_in_schema=False)

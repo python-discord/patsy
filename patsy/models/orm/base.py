@@ -11,7 +11,7 @@ NAMING_CONVENTIONS = {
     "uq": "%(table_name)s_%(column_0_name)s_uq",
     "ck": "%(table_name)s_%(constraint_name)s_ck",
     "fk": "%(table_name)s_%(column_0_name)s_%(referred_table_name)s_fk",
-    "pk": "%(table_name)s_pk"
+    "pk": "%(table_name)s_pk",
 }
 
 mapper_registry = registry(metadata=MetaData(naming_convention=NAMING_CONVENTIONS))

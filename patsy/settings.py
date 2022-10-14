@@ -31,8 +31,7 @@ class PatsyBaseSettings(pydantic.BaseSettings):
         for error in errors:
             if isinstance(error, Sequence):
                 found_relevant_errors = (
-                    PatsyBaseSettings.__log_missing_errors(base_error, error)
-                    or found_relevant_errors
+                    PatsyBaseSettings.__log_missing_errors(base_error, error) or found_relevant_errors
                 )
             elif isinstance(error.exc, pydantic.MissingError):
                 logger.error(f"Missing environment variable {base_error.args[1].__name__}.{error.loc_tuple()[0]}")

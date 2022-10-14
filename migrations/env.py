@@ -5,7 +5,7 @@ from alembic import context
 from sqlalchemy.engine import Connection
 
 from patsy.models.orm.base import Base
-from patsy.settings import ConnectionURLs, Connections
+from patsy.settings import Connections, ConnectionURLs
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -15,10 +15,7 @@ config = context.config
 logger = logging.root
 logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter(
-    fmt="%(levelname)-5.5s [%(name)s] %(message)s",
-    datefmt="%H:%M:%S"
-))
+handler.setFormatter(logging.Formatter(fmt="%(levelname)-5.5s [%(name)s] %(message)s", datefmt="%H:%M:%S"))
 logger.addHandler(handler)
 
 # Configure metadata for auto generation

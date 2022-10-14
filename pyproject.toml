@@ -28,7 +28,7 @@ flake8 = "5.0.4"
 flake8-annotations = "2.9.1"
 flake8-bugbear = "22.9.23"
 flake8-docstrings = "1.6"
-flake8-import-order = "0.18.1"
+flake8-isort = "5.0.0"
 flake8-string-format = "0.3.0"
 flake8-tidy-imports = "4.8.0"
 flake8-todo = "0.7"
@@ -38,6 +38,7 @@ taskipy = "1.10.3"
 mypy = "0.981"
 sqlalchemy2-stubs = "0.0.2a27"
 isort = "5.10.1"
+black = "22.10.0"
 
 [tool.taskipy.tasks]
 start = "uvicorn pixels.pixels:app"
@@ -46,6 +47,7 @@ lint = "pre-commit run --all-files"
 precommit = "pre-commit install"
 revision = "alembic revision --autogenerate -m"
 migrate = "alembic upgrade head"
+black = "black migrations patsy"
 
 [tool.mypy]
 plugins = "sqlalchemy.ext.mypy.plugin, pydantic.mypy"
@@ -57,10 +59,10 @@ show_error_codes = true
 enable_error_code = "ignore-without-code"
 
 [tool.isort]
-multi_line_output = 6
+profile = "black"
 order_by_type = false
-case_sensitive = true
-combine_as_imports = true
 line_length = 120
 known_first_party = ["patsy"]
-atomic = true
+
+[tool.black]
+line-length = 120

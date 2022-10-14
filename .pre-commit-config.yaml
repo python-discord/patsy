@@ -5,7 +5,7 @@ repos:
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml
-        args: [--unsafe]
+        args: [--unsafe]  # Needed for << lines in docker-compose.yml
       - id: end-of-file-fixer
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
@@ -13,6 +13,11 @@ repos:
     rev: v1.9.0
     hooks:
       - id: python-check-blanket-noqa
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
   - repo: local
     hooks:
       - id: flake8
@@ -29,3 +34,21 @@ repos:
         # Only run mypy on files in the pixels and migrations directories
         files: (patsy|migrations)/.+
         types: [python]
+      - id: black
+        name: black
+        description: This hook runs black within our project's environment.
+        entry: poetry run task black
+        language: system
+        types: [python]
+        require_serial: true
+
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: daily
+  skip: [flake8, black, mypy]  # pre-commit.ci doesn't support running under poetry right now.
+  submodules: false
