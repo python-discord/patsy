@@ -5,49 +5,50 @@ name = "pypi"
 
 [tool.poetry]
 name = "Patsy"
-version = "0.1.0"
+version = "1.0.0"
 description = "Transforms and stores help system message content for future processing."
-authors = ["Python Discord <info@pythondiscord.com>"]
+authors = ["Chris Lovering <chris.lovering.95@gmail.com>"]
 license = "MIT"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
-python = "3.10.*"
+python = "3.11.*"
 
 alembic = {version = "1.8.1", extras = ["tz"]}
-SQLAlchemy = {version = "1.4.41", extras = ["asyncio", "mypy", "postgresql_asyncpg"]}
-fastapi = "0.85.0"
-uvicorn = {extras = ["standard"], version = "0.18.3"}
-tomlkit = "0.11.5"
+SQLAlchemy = {version = "1.4.45", extras = ["asyncio", "postgresql_asyncpg"]}
+fastapi = "0.88.0"
+uvicorn = {extras = ["standard"], version = "0.20.0"}
 
-[tool.poetry.dev-dependencies]
-flake8 = "5.0.4"
+[tool.poetry.group.dev.dependencies]
+taskipy = "1.10.3"
+poetry-plugin-export = "1.2.0"
+
+[tool.poetry.group.linting.dependencies]
+flake8 = "6.0.0"
 flake8-annotations = "2.9.1"
-flake8-bugbear = "22.9.23"
+flake8-bugbear = "22.12.6"
 flake8-docstrings = "1.6"
-flake8-isort = "5.0.0"
+flake8-isort = "5.0.3"
 flake8-string-format = "0.3.0"
 flake8-tidy-imports = "4.8.0"
 flake8-todo = "0.7"
 pep8-naming = "0.13.2"
 pre-commit = "2.20.0"
-taskipy = "1.10.3"
-mypy = "0.981"
-sqlalchemy2-stubs = "0.0.2a27"
-isort = "5.10.1"
-black = "22.10.0"
+mypy = "0.991"
+sqlalchemy2-stubs = "0.0.2a29"
+isort = "5.11.1"
+black = "22.12.0"
 
 [tool.taskipy.tasks]
-start = "uvicorn pixels.pixels:app"
-reload = "uvicorn pixels.pixels:app --reload"
 lint = "pre-commit run --all-files"
 precommit = "pre-commit install"
 revision = "alembic revision --autogenerate -m"
 migrate = "alembic upgrade head"
 black = "black migrations patsy"
+isort = "isort ."
 
 [tool.mypy]
 plugins = "sqlalchemy.ext.mypy.plugin, pydantic.mypy"

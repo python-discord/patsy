@@ -1,14 +1,13 @@
-FROM --platform=linux/amd64 ghcr.io/chrislovering/python-poetry-base:3.10-slim
+FROM --platform=linux/amd64 python:3.11-slim
 
+# Define Git SHA build argument for sentry
 ARG git_sha="development"
 ENV GIT_SHA=$git_sha
 
-# Create the working directory
-WORKDIR /patsy
-
 # Install project dependencies
-COPY pyproject.toml poetry.lock ./
-RUN poetry install --only main
+WORKDIR /bot
+COPY main-requirements.txt ./
+RUN pip install -r main-requirements.txt
 
 # Copy the source code in last to optimize rebuilding the image
 COPY . .
@@ -21,4 +20,4 @@ ARG uvicorn_extras=""
 ENV uvicorn_extras=$uvicorn_extras
 
 ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["poetry run alembic upgrade head && poetry run uvicorn patsy:app --host 0.0.0.0 --port 80 $uvicorn_extras"]
+CMD ["alembic upgrade head && uvicorn patsy:app --host 0.0.0.0 --port 80 $uvicorn_extras"]

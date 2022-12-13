@@ -4,7 +4,7 @@
 # Make exceptions for what's needed
 !patsy
 !pyproject.toml
-!poetry.lock
+!main-requirements.txt
 !LICENSE
 !alembic.ini
 !migrations

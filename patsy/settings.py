@@ -4,7 +4,7 @@ from collections.abc import Sequence
 
 import pydantic
 import sqlalchemy.orm
-import tomlkit
+import tomllib
 from pydantic.error_wrappers import ErrorWrapper
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
@@ -64,10 +64,10 @@ class _Config(PatsyBaseSettings):
 
     @staticmethod
     def _get_project_version() -> str:
-        with open("pyproject.toml") as pyproject:
-            file_contents = pyproject.read()
+        with open("pyproject.toml", "rb") as pyproject:
+            file_contents = tomllib.load(pyproject)
 
-        return tomlkit.parse(file_contents)["tool"]["poetry"]["version"]  # type: ignore[index, return-value]
+        return file_contents["tool"]["poetry"]["version"]  # type: ignore[no-any-return]
 
     version: str = _get_project_version()
     debug: bool = False
