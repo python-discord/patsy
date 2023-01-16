@@ -17,7 +17,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.dependencies]
 python = "3.11.*"
 
-alembic = {version = "1.8.1", extras = ["tz"]}
+alembic = {version = "1.9.2", extras = ["tz"]}
 SQLAlchemy = {version = "1.4.45", extras = ["asyncio", "postgresql_asyncpg"]}
 fastapi = "0.88.0"
 uvicorn = {extras = ["standard"], version = "0.20.0"}
