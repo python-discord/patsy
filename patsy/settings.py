@@ -1,14 +1,13 @@
 import logging
+import tomllib
 import typing
 from collections.abc import Sequence
 
 import pydantic
-import sqlalchemy.orm
-import tomllib
 from pydantic.error_wrappers import ErrorWrapper
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-logger = logging.getLogger("pixels.constants")
+logger = logging.getLogger(__name__)
 
 # This is available in pydantic as pydantic.error_wrappers.ErrorList
 # but is typehinted as a Sequence[any], due to being a recursive type.
@@ -71,9 +70,9 @@ class _Config(PatsyBaseSettings):
 
     version: str = _get_project_version()
     debug: bool = False
-    state_secret: str
+    secret_key: pydantic.SecretStr
 
-    dev_guild_id: typing.Optional[int] = None
+    dev_guild_id: int | None = None
     pydis_guild_id = 267624335836053506
     guild_id: int = dev_guild_id or pydis_guild_id
 
@@ -93,5 +92,5 @@ ConnectionURLs = _ConnectionURLs()
 class Connections:
     """How to connect to other, internal services."""
 
-    DB_ENGINE = create_async_engine(ConnectionURLs.DATABASE_URL.get_secret_value(), future=True)
-    DB_SESSION = sqlalchemy.orm.sessionmaker(DB_ENGINE, class_=AsyncSession)
+    DB_ENGINE = create_async_engine(ConnectionURLs.DATABASE_URL.get_secret_value())
+    DB_SESSION = async_sessionmaker(DB_ENGINE)

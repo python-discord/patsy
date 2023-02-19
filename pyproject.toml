@@ -40,7 +40,6 @@ isort = "5.12.0"
 mypy = "1.0.1"
 pep8-naming = "0.13.3"
 pre-commit = "3.0.4"
-sqlalchemy2-stubs = "0.0.2a32"
 
 [tool.taskipy.tasks]
 lint = "pre-commit run --all-files"
@@ -51,7 +50,7 @@ black = "black migrations patsy"
 isort = "isort ."
 
 [tool.mypy]
-plugins = "sqlalchemy.ext.mypy.plugin, pydantic.mypy"
+plugins = "pydantic.mypy"
 strict = true
 implicit_reexport = true
 show_error_codes = true

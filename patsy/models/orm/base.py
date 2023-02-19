@@ -1,8 +1,7 @@
 """The base classes for ORM models."""
 
 from pydantic import BaseModel
-from sqlalchemy.orm import registry
-from sqlalchemy.orm.decl_api import DeclarativeMeta
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.schema import MetaData
 
 # See https://docs.sqlalchemy.org/en/14/core/constraints.html#constraint-naming-conventions
@@ -14,17 +13,11 @@ NAMING_CONVENTIONS = {
     "pk": "%(table_name)s_pk",
 }
 
-mapper_registry = registry(metadata=MetaData(naming_convention=NAMING_CONVENTIONS))
 
-
-class Base(metaclass=DeclarativeMeta):
+class Base(DeclarativeBase):
     """Classes that inherit this class will be automatically mapped using declarative mapping."""
 
-    __abstract__ = True
-    registry = mapper_registry
-    metadata = mapper_registry.metadata
-
-    __init__ = mapper_registry.constructor
+    metadata = MetaData(naming_convention=NAMING_CONVENTIONS)
 
     def patch_from_pydantic(self, pydantic_model: BaseModel) -> None:
         """Patch this model using the given pydantic model, unspecified attributes remain the same."""
