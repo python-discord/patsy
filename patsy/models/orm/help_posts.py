@@ -1,7 +1,7 @@
 import datetime
-from typing import Optional
 
-from sqlalchemy import BigInteger, Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import DateTime, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from patsy.models.orm.base import Base
 
@@ -11,27 +11,28 @@ class User(Base):
 
     __tablename__ = "users"
 
-    user_id: int = Column(Integer, primary_key=True)
-    opted_out: bool = Column(Boolean, default=False)
+    user_id: Mapped[int] = mapped_column(primary_key=True)
+    opted_out: Mapped[bool] = mapped_column(default=False)
 
 
 class HelpPost(Base):
-    """A model for storing information about individual help sessions."""
+    """A model for storing information about individual help posts."""
 
-    __tablename__ = "help_sessions"
+    __tablename__ = "help_posts"
 
-    post_id: int = Column(Integer, primary_key=True)
-    claimant_id: int = Column(ForeignKey(User.user_id))
-    opened_at: datetime.datetime = Column(DateTime)
-    closed_at: Optional[datetime.datetime] = Column(DateTime)
+    post_id: Mapped[int] = mapped_column(primary_key=True)
+    claimant_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    opened_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
+    closed_at: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class Message(Base):
-    """A model for storing information about messages in help sessions."""
+    """A model for storing information about messages in help posts."""
 
     __tablename__ = "messages"
 
-    message_id: int = Column(BigInteger, primary_key=True)
-    author_id: int = Column(ForeignKey(User.user_id))
-    post_id: int = Column(ForeignKey(HelpPost.post_id))
-    content: str = Column(String(4000))
+    message_id: Mapped[int] = mapped_column(primary_key=True)
+    in_reply_to_message_id: Mapped[int] = mapped_column(ForeignKey("messages.message_id"))
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    post_id: Mapped[int] = mapped_column(ForeignKey("help_posts.post_id"))
+    content: Mapped[str] = mapped_column(String(4000))
