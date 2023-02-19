@@ -18,7 +18,7 @@ Patsy requires the following environment variables to be present in a `.env` fil
 The following environment variables is only **required in production**
 
 `DATABASE_URL` - An asyncpg connection string to the postgres database `postgresql+asyncpg://pypatsy:pypatsy@postgres:5432/pypatsy`.
-`STATE_SECRET` - A long random string, must be URL safe.
+`SECRET_KEY` - A long random string, used to lock down endpoints with auth.
 
 The following environment variables are only **required in dev**.
 

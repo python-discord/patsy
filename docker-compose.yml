@@ -50,5 +50,5 @@ services:
       - "8000:80"
     environment:
       DATABASE_URL: postgresql+asyncpg://pypatsy:pypatsy@postgres:5432/pypatsy
-      STATE_SECRET: "IWW1RAVNCR7bb3yZbYerZ0KSA85QvKRDQaBfG4xgGdXZKhrXAQoPg2aT4BITtzurBA8CbuHBzoaMd1fxPry6RA"
+      SECRET_KEY: suitable-for-development-only
       DEBUG: "true"
