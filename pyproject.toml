@@ -17,30 +17,30 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.dependencies]
 python = "3.11.*"
 
-alembic = {version = "1.8.1", extras = ["tz"]}
-SQLAlchemy = {version = "1.4.45", extras = ["asyncio", "postgresql_asyncpg"]}
-fastapi = "0.88.0"
+alembic = {version = "1.9.4", extras = ["tz"]}
+fastapi = "0.92.0"
+SQLAlchemy = {version = "2.0.4", extras = ["asyncio", "postgresql_asyncpg"]}
 uvicorn = {extras = ["standard"], version = "0.20.0"}
 
 [tool.poetry.group.dev.dependencies]
+poetry-plugin-export = "1.3.0"
 taskipy = "1.10.3"
-poetry-plugin-export = "1.2.0"
 
 [tool.poetry.group.linting.dependencies]
+black = "23.1.0"
 flake8 = "6.0.0"
-flake8-annotations = "2.9.1"
-flake8-bugbear = "22.12.6"
-flake8-docstrings = "1.6"
-flake8-isort = "5.0.3"
+flake8-annotations = "3.0.0"
+flake8-bugbear = "23.2.13"
+flake8-docstrings = "1.7.0"
+flake8-isort = "6.0.0"
 flake8-string-format = "0.3.0"
 flake8-tidy-imports = "4.8.0"
 flake8-todo = "0.7"
-pep8-naming = "0.13.2"
-pre-commit = "2.20.0"
-mypy = "0.991"
-sqlalchemy2-stubs = "0.0.2a29"
-isort = "5.11.1"
-black = "22.12.0"
+isort = "5.12.0"
+mypy = "1.0.1"
+pep8-naming = "0.13.3"
+pre-commit = "3.0.4"
+sqlalchemy2-stubs = "0.0.2a32"
 
 [tool.taskipy.tasks]
 lint = "pre-commit run --all-files"

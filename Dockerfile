@@ -5,7 +5,7 @@ ARG git_sha="development"
 ENV GIT_SHA=$git_sha
 
 # Install project dependencies
-WORKDIR /bot
+WORKDIR /patsy
 COPY main-requirements.txt ./
 RUN pip install -r main-requirements.txt
 
