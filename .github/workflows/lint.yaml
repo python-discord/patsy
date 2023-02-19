@@ -12,11 +12,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Python Dependencies
-        uses: HassanAbouelela/actions/setup-python@setup-python_v1.3.3
+        uses: HassanAbouelela/actions/setup-python@setup-python_v1.4.0
         with:
           # Set dev=true to install flake8 extensions, which are dev dependencies
           python_version: "3.11"
-          install_args: "--only linting --only dev"
 
       # We will not run flake8 or mypy here, as we will use a separate action.
       - name: Run pre-commit hooks
@@ -75,7 +74,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Python Dependencies
-        uses: HassanAbouelela/actions/setup-python@setup-python_v1.3.3
+        uses: HassanAbouelela/actions/setup-python@setup-python_v1.4.0
         with:
           python_version: "3.11"
           install_args: "--only main --only dev"
@@ -93,5 +92,5 @@ jobs:
           poetry run task migrate
         env:
           DATABASE_URL: postgresql+asyncpg://pypatsy:pypatsy@localhost:5432/pypatsy
-          STATE_SECRET: IWW1RAVNCR7bb3yZbYerZ0KSA85QvKRDQaBfG4xgGdXZKhrXAQoPg2aT4BITtzurBA8CbuHBzoaMd1fxPry6RA
+          SECRET_KEY: suitable-for-development-only
           GIT_SHA: development

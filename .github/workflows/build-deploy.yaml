@@ -7,9 +7,6 @@ on:
         description: "A short-form SHA tag for the commit that triggered this flow"
         required: true
         type: string
-    secrets:
-      kube-config:
-        required: true
 
 jobs:
   build:
@@ -69,7 +66,7 @@ jobs:
         uses: azure/k8s-set-context@v3
         with:
           method: kubeconfig
-          kubeconfig: ${{ secrets.kube-config }}
+          kubeconfig: ${{ secrets.KUBECONFIG }}
 
       - name: Deploy to Kubernetes
         uses: Azure/k8s-deploy@v4

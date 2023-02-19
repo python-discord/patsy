@@ -34,5 +34,4 @@ jobs:
       - generate-inputs
     with:
       sha-tag: ${{ needs.generate-inputs.outputs.sha-tag }}
-    secrets:
-      kube-config: ${{ secrets.KUBECONFIG }}
+    secrets: inherit
