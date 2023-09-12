@@ -47,4 +47,4 @@ async def put_new_post(
     db_help_post = orm.HelpPost(**help_post.dict())
     session.add(db_help_post)
 
-    return db_help_post
+    return db_help_post  # type: ignore[return-value]

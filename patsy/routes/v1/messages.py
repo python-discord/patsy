@@ -27,6 +27,6 @@ async def put_new_message(
     stmt = select(orm.HelpPost)
 
     if only_open_posts:
-        stmt = stmt.where(orm.HelpPost.closed_at is None or orm.HelpPost.closed_at < func.now())
+        stmt = stmt.where(orm.HelpPost.closed_at.is_(None) or orm.HelpPost.closed_at < func.now())
 
     return list(await session.scalars(stmt))
