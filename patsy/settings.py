@@ -1,7 +1,9 @@
 import logging
+import sys
 import tomllib
 import typing
 from collections.abc import Sequence
+from pathlib import Path
 
 import pydantic
 from pydantic.error_wrappers import ErrorWrapper
@@ -33,18 +35,22 @@ class PatsyBaseSettings(pydantic.BaseSettings):
                     PatsyBaseSettings.__log_missing_errors(base_error, error) or found_relevant_errors
                 )
             elif isinstance(error.exc, pydantic.MissingError):
-                logger.error(f"Missing environment variable {base_error.args[1].__name__}.{error.loc_tuple()[0]}")
+                logger.error(
+                    "Missing environment variable %s.%s",
+                    base_error.args[1].__name__,
+                    error.loc_tuple()[0],
+                )
                 found_relevant_errors = True
 
         return found_relevant_errors
 
-    def __init__(self, *args: typing.Any, **kwargs: typing.Any) -> None:
+    def __init__(self, *args: typing.Any, **kwargs: typing.Any) -> None:  # noqa: ANN401
         """Try to instantiate the class, and print a nicer message for unset variables."""
         try:
             super().__init__(*args, **kwargs)
         except pydantic.ValidationError as error:
             if PatsyBaseSettings.__log_missing_errors(error, error.raw_errors):
-                exit(1)
+                sys.exit(1)
             else:
                 # The validation error is not due to an unset environment variable, propagate the error as normal
                 raise error from None
@@ -63,7 +69,7 @@ class _Config(PatsyBaseSettings):
 
     @staticmethod
     def _get_project_version() -> str:
-        with open("pyproject.toml", "rb") as pyproject:
+        with Path("pyproject.toml").open("rb") as pyproject:
             file_contents = tomllib.load(pyproject)
 
         return file_contents["tool"]["poetry"]["version"]  # type: ignore[no-any-return]

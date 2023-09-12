@@ -27,10 +27,11 @@ class HelpPostMessagePut(HelpPostMessageBase):
 
     # validators
     _ensure_valid_message_id = validator("in_reply_to_message_id", "author_id", "post_id", allow_reuse=True)(
-        utils.discord_ids_must_be_snowflake
+        utils.discord_ids_must_be_snowflake,
     )
 
     @validator("in_reply_to_message_id")
+    @classmethod
     def message_must_not_be_reply_to_itself(  # type: ignore[no-untyped-def]
         cls,
         value: int,
@@ -39,5 +40,6 @@ class HelpPostMessagePut(HelpPostMessageBase):
     ) -> int:
         """Ensure that the message is not a reply to itself."""
         if value == values["message_id"]:
-            raise ValueError("Message can not be a reply to itself.")
+            msg = "Message can not be a reply to itself."
+            raise ValueError(msg)
         return value

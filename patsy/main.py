@@ -14,20 +14,21 @@ app.include_router(v1_router)
 
 
 @app.exception_handler(StarletteHTTPException)
-async def my_exception_handler(request: Request, exception: StarletteHTTPException) -> JSONResponse:
+async def my_exception_handler(_: Request, exception: StarletteHTTPException) -> JSONResponse:
     """Wrap all errors in a JSON response."""
     return JSONResponse(status_code=exception.status_code, content={"message": exception.detail})
 
 
 @app.get("/ping", include_in_schema=False)
 async def ping_pong() -> str:
-    """Basic ping/pong endpoint for ready checks."""
+    """Return a basic pong answer."""
     return "pong!"
 
 
 @app.middleware("http")
 async def setup_data(
-    request: Request, callnext: t.Callable[[Request], abc.Coroutine[None, None, Response]]
+    request: Request,
+    callnext: t.Callable[[Request], abc.Coroutine[None, None, Response]],
 ) -> Response:
     """Get a connection from the pool for this request."""
     async with Connections.DB_SESSION.begin() as session:
