@@ -4,7 +4,7 @@
 # Make exceptions for what's needed
 !patsy
 !pyproject.toml
-!main-requirements.txt
+!requirements.txt
 !LICENSE
 !alembic.ini
 !migrations
