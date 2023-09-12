@@ -5,37 +5,27 @@ repos:
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml
-        args: [--unsafe]  # Needed for << lines in docker-compose.yml
       - id: end-of-file-fixer
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
 
-  - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.10.0
-    hooks:
-      - id: python-check-blanket-noqa
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        name: isort (python)
-
   - repo: https://github.com/python-poetry/poetry
-    rev: 1.3.2
+    rev: 1.6.1
     hooks:
       - id: poetry-check
       - id: poetry-export
-        args: ["-f", "requirements.txt", "-o", "main-requirements.txt"]
+        args: ["--output", "requirements.txt"]
 
   - repo: local
     hooks:
-      - id: flake8
-        name: Flake8
-        description: This hook runs flake8 within our project's environment.
-        entry: poetry run flake8
+      - id: ruff
+        name: ruff
+        description: Run ruff linting
+        entry: poetry run ruff check --force-exclude
         language: system
-        types: [python]
+        'types_or': [python, pyi]
+        require_serial: true
+        args: [--fix, --exit-non-zero-on-fix]
       - id: mypy
         name: mypy
         description: Run static analysis of the project using mypy.
@@ -51,14 +41,3 @@ repos:
         language: system
         types: [python]
         require_serial: true
-
-ci:
-  autofix_commit_msg: |
-    [pre-commit.ci] auto fixes from pre-commit.com hooks
-    for more information, see https://pre-commit.ci
-  autofix_prs: true
-  autoupdate_branch: ''
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
-  autoupdate_schedule: daily
-  skip: [flake8, black, mypy]  # pre-commit.ci doesn't support running under poetry right now.
-  submodules: false
