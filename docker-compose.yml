@@ -1,22 +1,6 @@
-x-logging: &logging
-  logging:
-    driver: "json-file"
-    options:
-      max-file: "5"
-      max-size: "10m"
-
-x-restart-policy: &restart_policy
-  restart: unless-stopped
-
-x-secure-containers: &secure_containers
-  privileged: false
-  read_only: true  # Prod uses a read-only fs, override this locally if it helps with debugging
-  user: "65534"  # Prod uses a non-root user, override this locally if it helps with debugging
-
 services:
   postgres:
-    << : *logging
-    << : *restart_policy
+    restart: unless-stopped
     image: postgres:15-alpine
     environment:
       POSTGRES_DB: pypatsy
@@ -27,18 +11,14 @@ services:
       interval: 2s
       timeout: 1s
       retries: 5
-    ports:
-    - 5432:5432
 
   patsy:
-    << : *logging
-    << : *restart_policy
-    << : *secure_containers
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - uvicorn_extras=--reload
+    restart: unless-stopped
+    privileged: false
+    read_only: true  # Prod uses a read-only fs, override this locally if it helps with debugging
+    user: "65534"  # Prod uses a non-root user, override this locally if it helps with debugging
+    build: .
+    command: ["alembic upgrade head && uvicorn patsy:app --host 0.0.0.0 --port 80 --reload"]
     volumes:
       - .:/patsy:ro
       - ./alembic_conf/versions:/patsy/alembic_conf/versions
