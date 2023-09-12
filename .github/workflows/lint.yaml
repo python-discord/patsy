@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Python Dependencies
-        uses: HassanAbouelela/actions/setup-python@setup-python_v1.4.0
+        uses: HassanAbouelela/actions/setup-python@setup-python_v1.4.2
         with:
           # Set dev=true to install flake8 extensions, which are dev dependencies
           python_version: "3.11"
@@ -62,10 +62,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Python Dependencies
-        uses: HassanAbouelela/actions/setup-python@setup-python_v1.4.0
+        uses: HassanAbouelela/actions/setup-python@setup-python_v1.4.2
         with:
           python_version: "3.11"
           install_args: "--only main --only dev"

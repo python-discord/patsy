@@ -62,7 +62,7 @@ jobs:
           webhook_token: ${{ secrets.GHA_WEBHOOK_TOKEN }}
 
           # Workflow information
-          #status: ${{ github.event.workflow_run.conclusion }}
+          status: ${{ github.event.workflow_run.conclusion }}
 
           pr_author_login: ${{ steps.pr_info.outputs.pr_author_login }}
           pr_number: ${{ steps.pr_info.outputs.pr_number }}
