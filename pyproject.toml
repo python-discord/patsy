@@ -15,7 +15,7 @@ python = "3.11.*"
 alembic = {version = "1.12.0", extras = ["tz"]}
 fastapi = "0.103.1"
 SQLAlchemy = {version = "2.0.19", extras = ["asyncio", "postgresql_asyncpg"]}
-pydantic = "1.10.12"
+pydantic = "1.10.13"
 uvicorn = {extras = ["standard"], version = "0.23.2"}
 
 [tool.poetry.group.dev.dependencies]
